@@ -50,6 +50,7 @@ ClientPublicKey 鉴权， 参考以下的内容：
 |  ----  | ----  | ----  |
 | blockId（path）  | string/int | 区块hash或区块高度  |
 | filter  | string | 过滤器，提取生交易hex中包括filter字符的交易  |
+| flag  | int32 | 断点续传标记，上次收到的最后一个blockIndex, 跳过blockIndex小于flag的交易  |
 
 例
 
@@ -60,6 +61,9 @@ curl 'https://stream.metasv.com/block/692281?filter=6339313932666335343537376661
 
 # 在区块00000000000000000704af34c063d04e2152d57f3925bd0c184797f636128926中寻找hex包含'b8d6dc3b97abe94d'的生交易
 curl 'https://stream.metasv.com/block/00000000000000000704af34c063d04e2152d57f3925bd0c184797f636128926?filter=b8d6dc3b97abe94d' -H  "Authorization: Bearer YOUR_JWT_ISSUED_BY_METASV"
+
+# 在区块00000000000000000704af34c063d04e2152d57f3925bd0c184797f636128926中寻找hex包含'b8d6dc3b97abe94d'的生交易，并跳过blockIndex <= 3 的交易
+curl 'https://stream.metasv.com/block/00000000000000000704af34c063d04e2152d57f3925bd0c184797f636128926?filter=b8d6dc3b97abe94d&flag=3' -H  "Authorization: Bearer YOUR_JWT_ISSUED_BY_METASV"
 
 ```
 

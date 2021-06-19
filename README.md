@@ -62,3 +62,14 @@ curl 'https://stream.metasv.com/block/692281?filter=6339313932666335343537376661
 curl 'https://stream.metasv.com/block/00000000000000000704af34c063d04e2152d57f3925bd0c184797f636128926?filter=b8d6dc3b97abe94d' -H  "Authorization: Bearer YOUR_JWT_ISSUED_BY_METASV"
 
 ```
+
+### To be continued...
+
+更多流推送功能正在开发中，尽情期待
+
+1. 区块头订阅
+2. 生交易订阅
+3. address订阅
+4. xpub订阅
+5. sensible订阅
+6. ...

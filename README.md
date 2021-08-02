@@ -67,6 +67,36 @@ curl 'https://stream.metasv.com/block/00000000000000000704af34c063d04e2152d57f39
 
 ```
 
+### /blockHeader
+
+订阅区块头消息
+
+此接口是无限流，通过30秒一次的HEARTBEAT消息，判断连接存活
+
+|  参数   | 类型  | 说明  |
+|  ----  | ----  | ----  |
+| flag  | int32 | 断点续传标记，上次收到的最后一个高度, 跳过blockIndex小于等于flag的交易，最多可以回溯500个块  |
+
+例
+
+```curl
+
+# 从最新高度开始订阅
+curl 'https://stream.metasv.com/blockHeader' -H  "Authorization: Bearer YOUR_JWT_ISSUED_BY_METASV"
+
+# 从高度698576开始订阅（此高度不得小于最新高度-500，否则只订阅最新区块头）
+curl 'https://stream.metasv.com/blockHeader?flag=698576' -H  "Authorization: Bearer YOUR_JWT_ISSUED_BY_METASV"
+
+```
+
+返回值示例
+
+```json
+
+data:{"bits":403862476,"blockHash":"00000000000000000da4cdfc91752e510a219f18682ce1c2f96796ac6c08b2e4","coinBase":"03d1a80a2f7461616c2e636f6d2f506c656173652070617920302e3520736174732f627974652c20696e666f407461616c2e636f6d8c1d33989acd493c0e720000","height":698577,"inputCount":454,"medianTime":1627890971000,"merkleRoot":"faa5d6c8c98cd0ddcfb8f00ac99c69d1466557d2ca2fbb5e44ef9799e653e583","miner":"Taal","nonce":2213484660,"outputCount":693,"prevBlock":"00000000000000000a239fe625579031effb38a7768cd7e4fe628f8bbf1febcf","reward":632829727,"size":14258909,"timestamp":1627894128000,"txCount":237,"version":536879104}
+
+```
+
 ### To be continued...
 
 更多流推送功能正在开发中，尽情期待

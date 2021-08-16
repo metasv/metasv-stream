@@ -97,6 +97,43 @@ data:{"bits":403862476,"blockHash":"00000000000000000da4cdfc91752e510a219f18682c
 
 ```
 
+### /tx
+
+订阅内存池生交易
+
+可以通过此接口来持续监听并过滤内存池以及zmq生交易事件。
+
+此接口是无限流，通过30秒一次的HEARTBEAT消息，判断连接存活。
+
+|  参数   | 类型  | 说明  |
+|  ----  | ----  | ----  |
+| rewind  | boolean | 是否回溯整个内存池，默认为false，从最新交易开始监听，true意味着先爬取既存的内存池交易，再监听新交易  |
+| filter  | string | 过滤器，提取生交易hex中包括filter字符的交易  |
+
+
+例
+
+```curl
+
+# 从最新交易开始订阅
+curl 'https://stream.metasv.com/tx' -H  "Authorization: Bearer YOUR_JWT_ISSUED_BY_METASV"
+
+# 从最新交易开始订阅hex中包含'63393139326663353435373766613537'的生交易
+curl 'https://stream.metasv.com/tx?filter=63393139326663353435373766613537' -H  "Authorization: Bearer YOUR_JWT_ISSUED_BY_METASV"
+
+# 先重放整个内存池，过滤出hex包含63393139326663353435373766613537的生交易，然后从最新交易开始订阅hex中包含'63393139326663353435373766613537'的生交易
+curl 'https://stream.metasv.com/tx?filter=63393139326663353435373766613537&rewind=true' -H  "Authorization: Bearer YOUR_JWT_ISSUED_BY_METASV"
+
+```
+
+返回值示例
+
+```text
+
+data:010000000166505ea5a55ac6544ecdd890686f32874159eb92db8c2bbbae95ea241bdb782a000000006b48304502210090a855b77738946506c5260b9a313965725dcd8aa306b72fe2e723d43ba6357c02201992e4bc69e93438cc2a73704ae5dee65189d3c648e5b9c72de6fc47695cf461412103c376ceca89f1bcb1f27fa9c0ef1f7c71152ac4932b6850009a6d29bd991ba81bffffffff0123020000000000001976a9142e1c2c72b45586b1d3e90f7df33bc8b64386fa9288ac00000000
+
+```
+
 ### To be continued...
 
 更多流推送功能正在开发中，尽情期待

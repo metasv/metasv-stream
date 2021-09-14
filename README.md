@@ -45,11 +45,13 @@ ClientPublicKey 鉴权， 参考以下的内容：
 ### /block/{blockId}
 
 从指定区块中过滤生交易，下载过滤后的全部生交易
+可以使用address和filter作为过滤条件，如果address不为空，首先过滤掉不包含address的交易，再过滤掉不包含filter的交易
 
 |  参数   | 类型  | 说明  |
 |  ----  | ----  | ----  |
 | blockId（path）  | string/int | 区块hash或区块高度  |
-| filter  | string | 过滤器，提取生交易hex中包括filter字符的交易  |
+| address  | string | 地址过滤器，提取生交易hex中包括地址address的交易（可为空，不过滤address）  |
+| filter  | string | 过滤器，提取生交易hex中包括filter字符的交易（可为空，不过滤）  |
 | flag  | int32 | 断点续传标记，上次收到的最后一个blockIndex, 跳过blockIndex小于flag的交易  |
 
 例
@@ -105,10 +107,13 @@ data:{"bits":403862476,"blockHash":"00000000000000000da4cdfc91752e510a219f18682c
 
 此接口是无限流，通过30秒一次的HEARTBEAT消息，判断连接存活。
 
+可以使用address和filter作为过滤条件，如果address不为空，首先过滤掉不包含address的交易，再过滤掉不包含filter的交易
+
 |  参数   | 类型  | 说明  |
 |  ----  | ----  | ----  |
 | rewind  | boolean | 是否回溯整个内存池，默认为false，从最新交易开始监听，true意味着先爬取既存的内存池交易，再监听新交易  |
-| filter  | string | 过滤器，提取生交易hex中包括filter字符的交易  |
+| address  | string | 地址过滤器，提取生交易中包括address的交易(允许空，不过滤地址)  |
+| filter  | string | 过滤器，提取生交易hex中包括filter字符的交易（允许空）  |
 
 
 例

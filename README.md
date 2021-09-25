@@ -145,9 +145,9 @@ data:010000000166505ea5a55ac6544ecdd890686f32874159eb92db8c2bbbae95ea241bdb782a0
 
 ### filter语法与逻辑
 
-为了方便交易hex过滤，提高效率，metasv设计了一个filter语法，主要包括三个操作符：
+为了方便交易hex过滤，提高效率，metasv设计了一个filter语法，主要包括三个操作符(注意get请求传递filter的时候需要进行url encode来转义)：
 
-1.  "｜" 代表管道操作，由此操作符分割filter成为多个step，任意一个管道step失败都会判定最终结果false
+1.  "｜" 代表管道操作(URL_ENCODED %7C)，由此操作符分割filter成为多个step，任意一个管道step失败都会判定最终结果false
 2. "," 代表并列操作，由此操作符分割单个step为多个判断条件，并列中的任意条件满足true都会返回true
 3. "!"　代表非操作，判断条件如果以此开头，则代表hex中不包含此字符串
 

@@ -54,6 +54,8 @@ ClientPublicKey 鉴权， 参考以下的内容：
 | filter  | string | 过滤器，提取生交易hex中包括filter字符的交易（可为空，不过滤）  |
 | flag  | int32 | 断点续传标记，上次收到的最后一个blockIndex, 跳过blockIndex小于flag的交易  |
 
+filter语法和逻辑参考后文
+
 例
 
 ```curl
@@ -107,7 +109,9 @@ data:{"bits":403862476,"blockHash":"00000000000000000da4cdfc91752e510a219f18682c
 
 此接口是无限流，通过30秒一次的HEARTBEAT消息，判断连接存活。
 
-可以使用address和filter作为过滤条件，如果address不为空，首先过滤掉不包含address的交易，再过滤掉不包含filter的交易
+可以使用address和filter作为过滤条件，如果address不为空，首先过滤掉不包含address的交易，再过滤掉不满足filter的交易
+
+filter语法和逻辑参考后文
 
 |  参数   | 类型  | 说明  |
 |  ----  | ----  | ----  |
@@ -138,6 +142,32 @@ curl 'https://stream.metasv.com/tx?filter=63393139326663353435373766613537&rewin
 data:010000000166505ea5a55ac6544ecdd890686f32874159eb92db8c2bbbae95ea241bdb782a000000006b48304502210090a855b77738946506c5260b9a313965725dcd8aa306b72fe2e723d43ba6357c02201992e4bc69e93438cc2a73704ae5dee65189d3c648e5b9c72de6fc47695cf461412103c376ceca89f1bcb1f27fa9c0ef1f7c71152ac4932b6850009a6d29bd991ba81bffffffff0123020000000000001976a9142e1c2c72b45586b1d3e90f7df33bc8b64386fa9288ac00000000
 
 ```
+
+### filter语法与逻辑
+
+为了方便交易hex过滤，提高效率，metasv设计了一个filter语法，主要包括三个操作符：
+
+1.  "｜" 代表管道操作，由此操作符分割filter成为多个step，任意一个管道step失败都会判定最终结果false
+2. "," 代表并列操作，由此操作符分割单个step为多个判断条件，并列中的任意条件满足true都会返回true
+3. "!"　代表非操作，判断条件如果以此开头，则代表hex中不包含此字符串
+
+filter规则：
+
+1. 首先根据pipe操作符 "|" 将filter语句分割成多个step，从左到右依次执行。任何一个step false的话，都会返回false（逻辑表示为且）
+2. 然后在每一个步骤中检查并列操作符 "," ，并列操作分割成多个字符串表达式，任意表达式为true的话，整个step为true（逻辑表示为或）
+3. 如果表达式以！开头，那代表不存在此字符串（逻辑表达式为非）
+
+例：
+
+|  源hex   | filter表达式 | 结果  |
+|  ----  | ----  | ----  |
+| aaaaa  | a | aaaaa 中是否包括 a，结果 true  |
+| aaaaa  | !a | aaaaa 中是否不包括a，结果false  |
+| aaaabbbb  | a,b,c | aaaabbbb 是否包括a或者b或者c，结果true  |
+| aaaabbbb  | a,!b,c | aaaabbbb 是否包括a或者不含b或者包括c，结果true  |
+
+pipe例：
+源aaaabbbb，表达式 a,c|b|!ab ，源aaaabbbb包含a或c，且包含b，且不包含ab，结果为false
 
 ### To be continued...
 

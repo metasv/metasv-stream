@@ -53,6 +53,7 @@ ClientPublicKey 鉴权， 参考以下的内容：
 | address  | string | 地址过滤器，提取生交易hex中包括地址address的交易（可为空，不过滤address）  |
 | filter  | string | 过滤器，提取生交易hex中包括filter字符的交易（可为空，不过滤）  |
 | flag  | int32 | 断点续传标记，上次收到的最后一个blockIndex, 跳过blockIndex小于flag的交易  |
+| format  | string | 返回交易的格式，raw或txid，默认raw  |
 
 filter语法和逻辑参考后文
 
@@ -118,6 +119,7 @@ filter语法和逻辑参考后文
 | rewind  | boolean | 是否回溯整个内存池，默认为false，从最新交易开始监听，true意味着先爬取既存的内存池交易，再监听新交易  |
 | address  | string | 地址过滤器，提取生交易中包括address的交易(允许空，不过滤地址)  |
 | filter  | string | 过滤器，提取生交易hex中包括filter字符的交易（允许空）  |
+| format  | string | 返回交易的格式，raw或txid，默认raw  |
 
 
 例
